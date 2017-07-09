@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import logo from './assets/images/logo.svg';
+import { string, number } from 'prop-types';
+
 import './build/css/App.css';
 
 class Event extends Component {
@@ -8,30 +9,12 @@ class Event extends Component {
     super(props);
     // Setting up initial state
     this.state = {
-      title: '',
-      date: '',
-      organizer: '',
-      location: '',
-      id: '',
+      title: this.props.title.rendered.replace("&#8217;", "'"),
+      date: this.props.acf.date,
+      organizer: this.props.acf.organizer,
+      location: this.props.acf.location,
+      id: this.props.id,
     };
-  }
-
-  // calling the componentDidMount() method after a component is rendered for the first time
-  componentDidMount() {
-      console.log(this.props.source);
-    this.serverRequest = axios.get(this.props.source).then(event => {
-      this.setState({
-        title: event.data.title.rendered.replace("&#8217;", "'"),
-        date: event.data.acf.date,
-        organizer: event.data.acf.organizer,
-        location: event.data.acf.location,
-        id: event.data.id
-      });
-    });
-  }
-  // calling the componentWillUnMount() method immediately before a component is unmounted from the DOM
-  componentWillUnmount() {
-    this.serverRequest.abort();
   }
 
   render() {
@@ -57,5 +40,13 @@ class Event extends Component {
     );
   }
 }
+
+Event.propTypes = {
+    title: string.isRequired,
+    date: string.isRequired,
+    organizer: string.isRequired,
+    location: string.isRequired,
+    id: number.isRequired,
+};
 
 export default Event;

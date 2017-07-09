@@ -36,7 +36,7 @@ class App extends Component {
       return (
         <div>
           <h1>Upcoming events</h1>
-          {events.map(event => <Event key={event['id']} source={'http://dev.wordpress-react.com/?rest_route=/wp/v2/event/' + event['id']} />)}
+          {events.map(event => <Event key={event['id']} {...event} />)}
         </div>
       )
     } else {
