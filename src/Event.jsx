@@ -3,7 +3,7 @@ import axios from 'axios';
 import logo from './assets/images/logo.svg';
 import './build/css/App.css';
 
-class App extends Component {
+class Event extends Component {
   constructor(props) {
     super(props);
     // Setting up initial state
@@ -18,13 +18,14 @@ class App extends Component {
 
   // calling the componentDidMount() method after a component is rendered for the first time
   componentDidMount() {
+      console.log(this.props.source);
     this.serverRequest = axios.get(this.props.source).then(event => {
       this.setState({
-        title: event.data[this.props.event].title.rendered.replace("&#8217;", "'"),
-        date: event.data[this.props.event].acf.date,
-        organizer: event.data[this.props.event].acf.organizer,
-        location: event.data[this.props.event].acf.location,
-        id: event.data[this.props.event].id
+        title: event.data.title.rendered.replace("&#8217;", "'"),
+        date: event.data.acf.date,
+        organizer: event.data.acf.organizer,
+        location: event.data.acf.location,
+        id: event.data.id
       });
     });
   }
@@ -57,4 +58,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Event;

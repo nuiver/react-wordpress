@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import logo from './assets/images/logo.svg';
+import Event from './Event';
+
 import './build/css/App.css';
 
 class App extends Component {
@@ -8,23 +9,17 @@ class App extends Component {
     super(props);
     // Setting up initial state
     this.state = {
-      title: '',
-      date: '',
-      organizer: '',
-      location: '',
-      id: '',
+      events: 'initial'
     };
   }
 
   // calling the componentDidMount() method after a component is rendered for the first time
-  componentDidMount() {
-    this.serverRequest = axios.get(this.props.source).then(event => {
+  componentWillMount() {
+          console.log(this.props.source);
+
+    this.serverRequest = axios.get(this.props.source).then(events => {
       this.setState({
-        title: event.data[this.props.event].title.rendered.replace("&#8217;", "'"),
-        date: event.data[this.props.event].acf.date,
-        organizer: event.data[this.props.event].acf.organizer,
-        location: event.data[this.props.event].acf.location,
-        id: event.data[this.props.event].id
+        events: events
       });
     });
   }
@@ -34,27 +29,24 @@ class App extends Component {
   }
 
   render() {
-    let printdate;
-    let cdate = new Date(this.state.date).toDateString();
-    if (cdate !== 'Invalid date') {
-      printdate = <p className="App-intro">{cdate}</p>;
-    }
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <a href={"http://dev.wordpress-react.com/?page_id="+ this.state.id } className="App__title"><h2>{this.state.title}</h2></a>
+    if ( this.state.events !== 'initial' ) {
+      var events = this.state.events.data;
+      console.log(events);
+      
+      return (
+        <div>
+          <h1>Upcoming events</h1>
+          {events.map(event => <Event key={event['id']} source={'http://dev.wordpress-react.com/?rest_route=/wp/v2/event/' + event['id']} />)}
         </div>
-        {printdate}
-        <p className="App-intro">
-          {this.state.organizer}
-        </p>
-        <p className="App-intro">
-          {this.state.location}
-        </p>
-      </div>
-    );
-  }
+      )
+    } else {
+      return (
+        <div>
+          <h1>LET ME LOAD....</h1>
+        </div>
+      )
+    }
+  } 
 }
 
 export default App;
