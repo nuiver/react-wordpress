@@ -5,7 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 import './build/css/index.css';
 
 ReactDOM.render(
-  <App source="http://dev.wordpress-react.com/?rest_route=/wp/v2/event" />,
+  <App />,
   document.getElementById('app')
 );
 registerServiceWorker();

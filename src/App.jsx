@@ -1,51 +1,38 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import Event from './Event';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Landing from './Landing';
+import EventDetail from './EventDetail';
 
 import './build/css/App.css';
 
+const renderMergedProps = (component, ...rest) => {
+  const finalProps = Object.assign({}, ...rest);
+  return (
+    React.createElement(component, finalProps)
+  );
+}
+
+const PropsRoute = ({ component, ...rest }) => {
+  return (
+    <Route {...rest} render={routeProps => {
+      return renderMergedProps(component, routeProps, rest);
+    }}/>
+  );
+}
+
 class App extends Component {
-  constructor(props) {
-    super(props);
-    // Setting up initial state
-    this.state = {
-      events: 'initial'
-    };
-  }
-
-  // calling the componentDidMount() method after a component is rendered for the first time
-  componentWillMount() {
-          console.log(this.props.source);
-
-    this.serverRequest = axios.get(this.props.source).then(events => {
-      this.setState({
-        events: events
-      });
-    });
-  }
-  // calling the componentWillUnMount() method immediately before a component is unmounted from the DOM
-  componentWillUnmount() {
-    this.serverRequest.abort();
-  }
 
   render() {
-    if ( this.state.events !== 'initial' ) {
-      var events = this.state.events.data;
-      console.log(events);
-      
-      return (
+    return (
+      <BrowserRouter>
         <div>
-          <h1>Upcoming events</h1>
-          {events.map(event => <Event key={event['id']} {...event} />)}
+          <Switch>
+            <PropsRoute exact path="/" component={Landing} source="http://dev.wordpress-react.com/?rest_route=/wp/v2/event" />
+            <PropsRoute path="/item/:eventId" component={EventDetail} />
+          </Switch>
         </div>
-      )
-    } else {
-      return (
-        <div>
-          <h1>LET ME LOAD....</h1>
-        </div>
-      )
-    }
+      </BrowserRouter>
+    )
   } 
 }
 
