@@ -27,7 +27,7 @@ class Event extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <a href={"http://dev.wordpress-react.com/?page_id="+ this.state.id } className="App__title"><h2>{this.state.title}</h2></a>
+          <a href={"/item/"+ this.state.id } className="App__title"><h2>{this.state.title}</h2></a>
         </div>
         {printdate}
         <p className="App-intro">

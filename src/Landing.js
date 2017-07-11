@@ -13,8 +13,6 @@ class Landing extends Component {
 
   // calling the componentDidMount() method after a component is rendered for the first time
   componentWillMount() {
-          console.log(this.props.source);
-
     this.serverRequest = axios.get(this.props.source).then(events => {
       this.setState({
         events: events

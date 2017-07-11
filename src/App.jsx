@@ -28,7 +28,7 @@ class App extends Component {
         <div>
           <Switch>
             <PropsRoute exact path="/" component={Landing} source="http://dev.wordpress-react.com/?rest_route=/wp/v2/event" />
-            <PropsRoute path="/item/:eventId" component={EventDetail} />
+            <PropsRoute path="/item/:eventId" source="http://dev.wordpress-react.com/?rest_route=/wp/v2/event/" component={EventDetail} />
           </Switch>
         </div>
       </BrowserRouter>
